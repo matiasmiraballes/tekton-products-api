@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TektonProductsApi", "TektonProductsApi\TektonProductsApi.csproj", "{89E7A281-F2FF-4531-BF64-DFB07855FE57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TektonProductsApi", "TektonProductsApi\TektonProductsApi.csproj", "{89E7A281-F2FF-4531-BF64-DFB07855FE57}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{EA9611BC-C6C4-4710-931D-F7996EAB5726}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{B154776F-2B12-4550-972B-89CC73E95B45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{4BC26304-0BAE-4B66-B4A3-D952600945A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{89E7A281-F2FF-4531-BF64-DFB07855FE57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89E7A281-F2FF-4531-BF64-DFB07855FE57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89E7A281-F2FF-4531-BF64-DFB07855FE57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA9611BC-C6C4-4710-931D-F7996EAB5726}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA9611BC-C6C4-4710-931D-F7996EAB5726}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA9611BC-C6C4-4710-931D-F7996EAB5726}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA9611BC-C6C4-4710-931D-F7996EAB5726}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B154776F-2B12-4550-972B-89CC73E95B45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B154776F-2B12-4550-972B-89CC73E95B45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B154776F-2B12-4550-972B-89CC73E95B45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B154776F-2B12-4550-972B-89CC73E95B45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BC26304-0BAE-4B66-B4A3-D952600945A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BC26304-0BAE-4B66-B4A3-D952600945A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BC26304-0BAE-4B66-B4A3-D952600945A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BC26304-0BAE-4B66-B4A3-D952600945A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
