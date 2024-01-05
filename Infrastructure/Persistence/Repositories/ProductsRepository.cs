@@ -1,7 +1,6 @@
 ﻿using Domain.Products;
 using Infrastructure.Persistence.DataProvider.DataClient;
 using Infrastructure.Persistence.DataProvider.DbModels;
-using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories
 {
@@ -26,6 +25,19 @@ namespace Infrastructure.Persistence.Repositories
             var inMemoryProduct = product.FromModel();
 
             await _context.Products.AddAsync(inMemoryProduct, cancellationToken);
+        }
+
+        public async Task UpdateAsync(Product product, CancellationToken cancellationToken)
+        {
+            var dbProduct = await _context.Products.FindAsync(product.ProductId.Value, cancellationToken);
+            if(dbProduct != null)
+            {
+                dbProduct.Name = product.Name;
+                dbProduct.Description = product.Description;
+                dbProduct.Price = product.Price;
+                dbProduct.Status = product.Status;
+                dbProduct.Stock = product.Stock;
+            }
         }
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)

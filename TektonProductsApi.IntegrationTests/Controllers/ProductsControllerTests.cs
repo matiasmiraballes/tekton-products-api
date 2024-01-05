@@ -189,9 +189,11 @@ namespace TektonProductsApi.IntegrationTests.Controllers
         public async Task Put_ProductReturns_204ForValidProductData()
         {
             // Arrange
+            var seededProductGuid = new Guid("b1e76df0-11db-4402-a1b0-cb5e3b88bf0a");
+
             var validProduct = new
             {
-                productId = 1,
+                productId = seededProductGuid,
                 name = "Sample Product Updated",
                 status = 0,
                 stock = 50,
@@ -203,12 +205,24 @@ namespace TektonProductsApi.IntegrationTests.Controllers
             {
                 Content = new StringContent(JsonSerializer.Serialize(validProduct), Encoding.UTF8, "application/json")
             };
+            var getRequest = new HttpRequestMessage(HttpMethod.Get, "/Products/" + seededProductGuid.ToString());
 
             // Act
             var response = await _client.SendAsync(request);
 
+            var getResponse = await _client.SendAsync(getRequest);
+            var getResponseBody = await getResponse.Content.ReadAsStringAsync();
+            var productResponse = JsonSerializer.Deserialize<ProductResponse>(getResponseBody, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
             // Assert
             Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+            Assert.Equal(validProduct.productId, productResponse.ProductId);
+            Assert.Equal(validProduct.name, productResponse.Name);
+            Assert.Equal(validProduct.description, productResponse.Description);
+            Assert.Equal(validProduct.stock, productResponse.Stock);
         }
 
         [Fact]

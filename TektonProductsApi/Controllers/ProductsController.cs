@@ -1,5 +1,6 @@
 ﻿using Application.Products.Create;
 using Application.Products.GetById;
+using Application.Products.Update;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TektonProductsApi.Contracts;
@@ -40,6 +41,22 @@ namespace TektonProductsApi.Controllers
 
             return result.Match(
                 response => Created($"{Request.Path}/{response}", response),
+                errors => errors.First().ToActionResult()
+            );
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Put(UpdateProductCommand command)
+        {
+            if (command is null)
+                return BadRequest(new ArgumentNullException());
+
+            var result = await _mediator.Send(
+                command
+            );
+
+            return result.Match(
+                response => NoContent(),
                 errors => errors.First().ToActionResult()
             );
         }
