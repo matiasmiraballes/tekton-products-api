@@ -14,6 +14,6 @@ namespace Infrastructure.Persistence.DataProvider.DataClient
         {
         }
 
-        internal DbSet<InMemoryProduct> Products { get; set; }
+        public DbSet<InMemoryProduct> Products { get; set; }
     }
 }

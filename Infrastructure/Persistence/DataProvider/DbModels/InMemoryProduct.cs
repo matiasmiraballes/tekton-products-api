@@ -3,14 +3,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Infrastructure.Persistence.DataProvider.DbModels
 {
-    internal class InMemoryProduct
+    public class InMemoryProduct
     {
         [Key]
         public Guid ProductId { get; set; }
         public string Name { get; set; }
         public int Status { get; set; }
         public int Stock { get; set; }
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
         public decimal Price { get; set; }
 
 
@@ -27,7 +27,7 @@ namespace Infrastructure.Persistence.DataProvider.DbModels
         }
     }
 
-    internal static class ProductExtension
+    public static class ProductExtension
     {
         internal static InMemoryProduct FromModel(this Product product)
         {

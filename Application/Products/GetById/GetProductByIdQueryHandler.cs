@@ -3,6 +3,7 @@ using Infrastructure.Services;
 using Domain.Products;
 using ErrorOr;
 using MediatR;
+using Infrastructure.Persistence.DataProvider.DataClient;
 
 namespace Application.Products.GetById
 {
@@ -10,20 +11,23 @@ namespace Application.Products.GetById
 
     internal sealed class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, ErrorOr<ProductResponse>>
     {
-        private readonly IProductsRepository _productsRepository;
         private readonly IProductsDiscountService _productsDiscountService;
         private readonly IProductStatusService _productStatusService;
+        private readonly InMemoryDbContext _context;
 
-        public GetProductByIdQueryHandler(IProductsRepository productsRepository, IProductsDiscountService productsDiscountService, IProductStatusService productStatusService)
+        public GetProductByIdQueryHandler(IProductsDiscountService productsDiscountService, IProductStatusService productStatusService, InMemoryDbContext context)
         {
-            _productsRepository = productsRepository ?? throw new ArgumentNullException(nameof(productsRepository));
+            _context = context ?? throw new ArgumentNullException(nameof(context));
             _productsDiscountService = productsDiscountService ?? throw new ArgumentNullException(nameof(productsDiscountService));
             _productStatusService = productStatusService ?? throw new ArgumentNullException(nameof(productStatusService));
         }
 
         public async Task<ErrorOr<ProductResponse>> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
         {
-            Product? product = await _productsRepository.GetByIdAsync(new ProductId(request.ProductId), cancellationToken);
+            // For queries we can either use the repository or access the dbContext directly for better performance and flexibility.
+            // Product? product = await _productsRepository.GetByIdAsync(new ProductId(request.ProductId), cancellationToken);
+
+            Product? product = (await _context.Products.FindAsync(request.ProductId, cancellationToken))?.ToModel();
 
             if (product is null)
             {
