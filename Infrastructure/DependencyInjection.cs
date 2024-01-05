@@ -13,6 +13,7 @@ namespace Infrastructure
         {
             services.AddPersistence(configuration);
 
+            services.AddHttpClient();
             services.AddMemoryCache();
             services.AddScoped<IProductStatusService, ProductStatusService>();
             services.AddScoped<IProductsDiscountService, ProductsDiscountService>();
