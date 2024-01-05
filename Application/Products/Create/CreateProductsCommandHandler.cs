@@ -23,8 +23,6 @@ namespace Application.Products.Create
 
         public async Task<ErrorOr<Guid>> Handle(CreateProductsCommand command, CancellationToken cancellationToken)
         {
-            // TODO: Add validations 
-
             var product = Product.Create(
                 new ProductId(Guid.NewGuid()),
                 command.Name,

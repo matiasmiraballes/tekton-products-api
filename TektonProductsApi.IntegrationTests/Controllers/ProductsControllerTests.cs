@@ -30,7 +30,6 @@ namespace TektonProductsApi.IntegrationTests.Controllers
                 price = 29.99
             };
 
-            // Convert the product to JSON
             var request = new HttpRequestMessage(HttpMethod.Post, "/Products")
             {
                 Content = new StringContent(JsonSerializer.Serialize(validProduct), Encoding.UTF8, "application/json")
@@ -38,19 +37,24 @@ namespace TektonProductsApi.IntegrationTests.Controllers
 
             // Act
             var response = await _client.SendAsync(request);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            
 
             // Assert
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-
-            //var responseBody = await response.Content.ReadAsStringAsync();
-            // TODO: Assert location header
+            // Check for the existence of the Location header
+            Assert.True(response.Headers.Location is not null);
+            // Assert that the Location URI is absolute
+            Assert.True(response.Headers.Location.IsAbsoluteUri);
+            // Example: Assert that the Location URI contains the correct path or segments
+            Assert.EndsWith("/Products", response.Headers.Location.AbsoluteUri);
         }
 
         [Fact]
         public async Task Post_ProductReturns_400ForInvalidProductName()
         {
             // Arrange
-            var validProduct = new
+            var invalidProduct = new
             {
                 name = "",  // name is mandatory
                 status = 1,
@@ -62,7 +66,7 @@ namespace TektonProductsApi.IntegrationTests.Controllers
             // Convert the product to JSON
             var request = new HttpRequestMessage(HttpMethod.Post, "/Products")
             {
-                Content = new StringContent(JsonSerializer.Serialize(validProduct), Encoding.UTF8, "application/json")
+                Content = new StringContent(JsonSerializer.Serialize(invalidProduct), Encoding.UTF8, "application/json")
             };
 
             // Act
@@ -85,7 +89,7 @@ namespace TektonProductsApi.IntegrationTests.Controllers
         public async Task Post_ProductReturns_400ForInvalidProductStatus()
         {
             // Arrange
-            var validProduct = new
+            var invalidProduct = new
             {
                 name = "Sample Product",
                 status = 2, // status can be "0" or "1"
@@ -94,10 +98,9 @@ namespace TektonProductsApi.IntegrationTests.Controllers
                 price = 29.99
             };
 
-            // Convert the product to JSON
             var request = new HttpRequestMessage(HttpMethod.Post, "/Products")
             {
-                Content = new StringContent(JsonSerializer.Serialize(validProduct), Encoding.UTF8, "application/json")
+                Content = new StringContent(JsonSerializer.Serialize(invalidProduct), Encoding.UTF8, "application/json")
             };
 
             // Act
@@ -113,14 +116,14 @@ namespace TektonProductsApi.IntegrationTests.Controllers
             });
 
             Assert.Equal("Product.Status", errorResponse.Code);
-            Assert.Equal("Must provide a valid status.", errorResponse.Description);
+            Assert.Equal("Invalid Status has been supplied.", errorResponse.Description);
         }
 
         [Fact]
         public async Task Post_ProductReturns_400ForInvalidProductStock()
         {
             // Arrange
-            var validProduct = new
+            var invalidProduct = new
             {
                 name = "Sample Product",
                 status = 1,
@@ -129,10 +132,9 @@ namespace TektonProductsApi.IntegrationTests.Controllers
                 price = 29.99
             };
 
-            // Convert the product to JSON
             var request = new HttpRequestMessage(HttpMethod.Post, "/Products")
             {
-                Content = new StringContent(JsonSerializer.Serialize(validProduct), Encoding.UTF8, "application/json")
+                Content = new StringContent(JsonSerializer.Serialize(invalidProduct), Encoding.UTF8, "application/json")
             };
 
             // Act
@@ -148,14 +150,14 @@ namespace TektonProductsApi.IntegrationTests.Controllers
             });
 
             Assert.Equal("Product.Stock", errorResponse.Code);
-            Assert.Equal("stock cannot be negative.", errorResponse.Description);
+            Assert.Equal("Stock cannot be negative.", errorResponse.Description);
         }
 
         [Fact]
         public async Task Post_ProductReturns_400ForInvalidProductPrice()
         {
             // Arrange
-            var validProduct = new
+            var invalidProduct = new
             {
                 name = "Sample Product",
                 status = 1,
@@ -164,10 +166,9 @@ namespace TektonProductsApi.IntegrationTests.Controllers
                 price = -29.99 // price cannot be negative
             };
 
-            // Convert the product to JSON
             var request = new HttpRequestMessage(HttpMethod.Post, "/Products")
             {
-                Content = new StringContent(JsonSerializer.Serialize(validProduct), Encoding.UTF8, "application/json")
+                Content = new StringContent(JsonSerializer.Serialize(invalidProduct), Encoding.UTF8, "application/json")
             };
 
             // Act
@@ -200,7 +201,6 @@ namespace TektonProductsApi.IntegrationTests.Controllers
                 price = 59.99
             };
 
-            // Convert the product to JSON
             var request = new HttpRequestMessage(HttpMethod.Put, "/Products")
             {
                 Content = new StringContent(JsonSerializer.Serialize(validProduct), Encoding.UTF8, "application/json")

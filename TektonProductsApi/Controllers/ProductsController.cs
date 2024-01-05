@@ -31,7 +31,7 @@ namespace TektonProductsApi.Controllers
             var result = await _mediator.Send(command);
 
             return result.Match(
-                response => CreatedAtAction("Get", new { id = response }),
+                response => CreatedAtAction("Get", new { productId = response }),
                 errors => errors.First().ToActionResult()
             );
         }
