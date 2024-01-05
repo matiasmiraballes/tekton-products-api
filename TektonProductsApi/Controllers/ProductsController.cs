@@ -1,4 +1,5 @@
 ﻿using Application.Products.Create;
+using Application.Products.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TektonProductsApi.Contracts;
@@ -16,10 +17,17 @@ namespace TektonProductsApi.Controllers
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpGet("{productId}")]
+        public async Task<IActionResult> GetById(Guid productId)
         {
-            throw new NotImplementedException();
+            var result = await _mediator.Send(
+                new GetProductByIdQuery(productId)
+            );
+
+            return result.Match(
+                response => Ok(response),
+                errors => errors.First().ToActionResult()
+            );
         }
 
         [HttpPost]
@@ -31,7 +39,7 @@ namespace TektonProductsApi.Controllers
             var result = await _mediator.Send(command);
 
             return result.Match(
-                response => CreatedAtAction("Get", new { productId = response }),
+                response => Created($"{Request.Path}/{response}", response),
                 errors => errors.First().ToActionResult()
             );
         }

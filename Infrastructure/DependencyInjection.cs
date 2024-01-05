@@ -1,6 +1,7 @@
 ﻿using Domain.Products;
 using Infrastructure.Persistence.DataProvider.DataClient;
 using Infrastructure.Persistence.Repositories;
+using Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +12,10 @@ namespace Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddPersistence(configuration);
+
+            services.AddMemoryCache();
+            services.AddScoped<IProductStatusService, ProductStatusService>();
+            services.AddScoped<IProductsDiscountService, ProductsDiscountService>();
 
             return services;
         }

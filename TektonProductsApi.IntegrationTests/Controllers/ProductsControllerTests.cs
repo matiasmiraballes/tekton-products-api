@@ -44,10 +44,8 @@ namespace TektonProductsApi.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
             // Check for the existence of the Location header
             Assert.True(response.Headers.Location is not null);
-            // Assert that the Location URI is absolute
-            Assert.True(response.Headers.Location.IsAbsoluteUri);
             // Example: Assert that the Location URI contains the correct path or segments
-            Assert.EndsWith("/Products", response.Headers.Location.AbsoluteUri);
+            Assert.Contains("/Products", response.Headers.Location.OriginalString);
         }
 
         [Fact]
@@ -216,9 +214,10 @@ namespace TektonProductsApi.IntegrationTests.Controllers
         [Fact]
         public async Task Get_ProductByIdReturns_200ForExistentProduct()
         {
+
             // Arrange
-            var product1Guid = Guid.NewGuid(); // TODO: Update guid to an existing product's guid
-            var request = new HttpRequestMessage(HttpMethod.Get, "/Products/" + product1Guid.ToString());
+            var seededProductGuid = new Guid("b1e76df0-11db-4402-a1b0-cb5e3b88bf0a");
+            var request = new HttpRequestMessage(HttpMethod.Get, "/Products/" + seededProductGuid.ToString());
 
             // Act
             var response = await _client.SendAsync(request);

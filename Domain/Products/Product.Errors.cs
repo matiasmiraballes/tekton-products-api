@@ -10,6 +10,7 @@ namespace Domain.Products
             public static Error InvalidStatus => Error.Validation("Product.Status", "Invalid Status has been supplied.");
             public static Error NegativeStock => Error.Validation("Product.Stock", "Stock cannot be negative.");
             public static Error NegativePrice => Error.Validation("Product.Price", "Price cannot be negative.");
+            public static Error NotFound(Guid productId) => Error.NotFound("Product", $"Product with id {productId} was not found.");
         }
     }
 }
